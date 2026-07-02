@@ -1,0 +1,346 @@
+# Tiêu Chuẩn Lập Trình Java + JavaFX
+> Dự án: SNST Vietnam | ADTechnology  
+> Áp dụng cho: Java 8 + JavaFX + Maven  
+> Bắt buộc tuân thủ trong mọi tình huống
+
+---
+
+## 1. Định Dạng & Căn Chỉnh
+
+### Căn thẳng hàng dấu `=` liên tiếp
+```java
+// ĐÚNG
+String name     = "SNST";
+int    quantity = 100;
+double price    = 99.5;
+
+// SAI
+String name = "SNST";
+int quantity = 100;
+double price = 99.5;
+```
+
+### Căn thẳng hàng tham số dài
+```java
+// ĐÚNG
+Label titleLabel = new Label("Dashboard");
+Label nameLabel  = new Label("Tên sản phẩm");
+Label codeLabel  = new Label("Mã SP");
+
+// SAI
+Label titleLabel = new Label("Dashboard");
+Label nameLabel = new Label("Tên sản phẩm");
+Label codeLabel = new Label("Mã SP");
+```
+
+---
+
+## 2. Đặt Tên
+
+### Tên biến — camelCase
+```java
+// ĐÚNG
+String productName  = "Sản phẩm A";
+int    totalCount   = 0;
+boolean isConnected = false;
+
+// SAI — không dùng ALL_CAPS hay snake_case
+String PRODUCT_NAME = "Sản phẩm A";
+String product_name = "Sản phẩm A";
+```
+
+### Tên hàm — camelCase, bắt đầu bằng động từ
+```java
+// ĐÚNG
+void   loadData()       { }
+String getProductName() { }
+void   buildSidebar()   { }
+void   createTable()    { }
+
+// SAI
+void   Data()    { }
+void   sidebar() { }
+```
+
+### Tên class — PascalCase
+```java
+// ĐÚNG
+public class ProductManager { }
+public class DashboardView  { }
+
+// SAI
+public class productManager { }
+public class dashboard_view { }
+```
+
+### Tên file — PascalCase, khớp tên class
+```
+// ĐÚNG
+ProductManager.java
+DashboardView.java
+
+// SAI
+productManager.java
+dashboard_view.java
+PRODUCTMANAGER.java
+```
+
+---
+
+## 3. Cấu Trúc Điều Khiển
+
+### Không dùng toán tử ba ngôi `? :`
+```java
+// ĐÚNG
+String status;
+if (quantity > 0) {
+    status = "Còn hàng";
+} else {
+    status = "Hết hàng";
+}
+
+// SAI
+String status = quantity > 0 ? "Còn hàng" : "Hết hàng";
+```
+
+### Luôn có dấu `{}` dù chỉ 1 dòng
+```java
+// ĐÚNG
+if (isValid) {
+    save();
+}
+
+// SAI
+if (isValid) save();
+```
+
+---
+
+## 4. Hàm & Return
+
+### Không return trực tiếp kết quả của hàm khác
+```java
+// ĐÚNG
+private boolean checkConnection() {
+    boolean isConnected = database.connect();
+    return isConnected;
+}
+
+// SAI
+private boolean checkConnection() {
+    return database.connect();
+}
+```
+
+### Không dùng biến toàn cục — luôn truyền tham số
+```java
+// ĐÚNG
+private void loadProduct(int productId, String category) {
+    // dùng productId và category từ tham số
+}
+
+// SAI
+private int productId; // biến toàn cục
+private void loadProduct() {
+    // dùng this.productId trực tiếp
+}
+```
+
+---
+
+## 5. OOP & Class
+
+### Không gán thuộc tính trực tiếp — dùng setter
+```java
+// ĐÚNG
+public void setProductName(String name) {
+    this.productName = name;
+}
+
+// SAI (gán thẳng từ bên ngoài)
+product.productName = "Sản phẩm A";
+```
+
+### Khai báo hằng số bằng `static final`
+```java
+// ĐÚNG
+private static final String DB_PATH    = "snst.db";
+private static final int    PAGE_SIZE  = 20;
+private static final String BG_COLOR   = "#0D1B2A";
+```
+
+---
+
+## 6. Phân Tách Trách Nhiệm
+
+```
+Mỗi class chỉ làm 1 việc:
+
+DatabaseHelper.java   → Chỉ kết nối và truy vấn database
+ProductRepository.java → Chỉ xử lý dữ liệu sản phẩm (CRUD)
+ProductService.java   → Chỉ xử lý logic nghiệp vụ
+DashboardView.java    → Chỉ xây dựng giao diện dashboard
+Main.java             → Chỉ khởi động app và ghép các phần lại
+```
+
+```java
+// ĐÚNG — tách biệt rõ ràng
+public class ProductRepository {
+    public List<Product> getAll() { /* query database */ }
+    public void save(Product product) { /* insert database */ }
+}
+
+public class DashboardView {
+    public VBox build(List<Product> products) { /* tạo giao diện */ }
+}
+
+// SAI — gộp database và giao diện vào 1 chỗ
+public class Dashboard {
+    public VBox build() {
+        // query database ở đây
+        // tạo giao diện ở đây
+        // sai vì trộn lẫn 2 trách nhiệm
+    }
+}
+```
+
+---
+
+## 7. CSS & Style
+
+### Không viết style inline trong Java — dùng file CSS riêng
+```java
+// ĐÚNG — load từ file CSS
+scene.getStylesheets().add(
+    getClass().getResource("/styles/main.css").toExternalForm()
+);
+
+// SAI — viết style thẳng trong Java
+label.setStyle("-fx-background-color: #0D1B2A; -fx-text-fill: white;");
+```
+
+### Trường hợp ngoại lệ — chỉ cho màu động (tính toán lúc chạy)
+```java
+// CHẤP NHẬN — màu được truyền vào từ ngoài
+label.setStyle("-fx-text-fill: " + color + ";");
+```
+
+---
+
+## 8. Comment
+
+### Chỉ comment khi logic phức tạp
+```java
+// ĐÚNG — giải thích logic không hiển nhiên
+// Tính tồn kho thực = nhập - xuất - hỏng - mất
+int actualStock = imported - exported - damaged - lost;
+
+// SAI — comment điều hiển nhiên
+// Tạo label
+Label nameLabel = new Label("Tên");
+```
+
+### Hàm gọi nhiều hàm con — phải comment trên mỗi dòng gọi
+```java
+private void initializeDashboard() {
+    // Tải dữ liệu từ database
+    loadProducts();
+
+    // Xây dựng các thẻ thống kê
+    buildStatCards();
+
+    // Xây dựng bảng sản phẩm
+    buildProductTable();
+}
+```
+
+---
+
+## 9. Tiêu Đề Bắt Buộc
+
+### Tiêu đề class
+```java
+/**
+ * Quản lý dữ liệu sản phẩm
+ *
+ * @since   1.0.0
+ * @package com.snst
+ * @author  triti
+ */
+public class ProductRepository {
+```
+
+### Tiêu đề hàm (chỉ khi logic phức tạp)
+```java
+/**
+ * Lấy danh sách sản phẩm theo điều kiện lọc
+ *
+ * @since  1.0.0
+ * @param  category  Danh mục cần lọc
+ * @param  keyword   Từ khóa tìm kiếm
+ * @return Danh sách sản phẩm phù hợp
+ */
+public List<Product> getByFilter(String category, String keyword) {
+```
+
+---
+
+## 10. Thứ Tự Trong File
+
+```java
+public class ProductRepository {
+
+    // 1. Hằng số
+    private static final String TABLE = "products";
+
+    // 2. Thuộc tính
+    private DatabaseHelper db;
+
+    // 3. Constructor
+    public ProductRepository(DatabaseHelper db) { }
+
+    // 4. Hàm public (dùng từ bên ngoài)
+    public List<Product> getAll()          { }
+    public void          save(Product p)   { }
+    public void          delete(int id)    { }
+
+    // 5. Hàm private (nội bộ)
+    private String buildQuery(String filter) { }
+
+    // 6. Hàm bổ sung sau này — luôn thêm vào DƯỚI CÙNG
+    // (không chen vào giữa các hàm có sẵn)
+}
+```
+
+---
+
+## 11. Cập Nhật Version
+
+Khi thêm tính năng hoặc sửa lỗi, cập nhật version ở đầu file:
+
+```java
+/**
+ * Dashboard View
+ *
+ * @version 1.2.0   ← tăng version khi có thay đổi
+ * @since   1.0.0
+ * @author  triti
+ */
+```
+
+---
+
+## 12. Quy Tắc Ưu Tiên Khi Có Nhiều Cách
+
+```
+1. Ưu tiên cách đơn giản, dễ đọc nhất
+2. Ưu tiên cách dễ bảo trì (1 mình làm)
+3. Ưu tiên tương thích Java 8
+4. Tránh over-engineering
+5. Code người mới cũng đọc hiểu được
+```
+
+---
+
+*Tất cả cuộc trò chuyện và giải thích phải bằng Tiếng Việt*  
+*Luôn ngắn gọn, súc tích, đi thẳng vào vấn đề*
