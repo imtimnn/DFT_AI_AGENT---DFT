@@ -1,7 +1,4 @@
 /**
- * Quản lý 1 session bash sống xuyên suốt — giống mở Terminal Linux thật
- * Có khả năng phát hiện khi nào lệnh chạy xong (dựa vào prompt bash quay lại)
- * Mở tool chính ngay sau khi Login thành công bằng cách source run.tcl
  *
  * @since   9.0.0
  * @package com.snst
@@ -74,7 +71,7 @@ public class ToolLauncher {
                         javafx.application.Platform.runLater(() -> onBusyChanged.accept(!looksLikePrompt));
                     }
                 } catch (Exception e) {
-                    // Bình thường khi session đóng
+                    
                 } finally {
                     sessionAlive = false;
                     javafx.application.Platform.runLater(onClosed);
@@ -122,11 +119,7 @@ public class ToolLauncher {
     // ═══════════════════════════════════════════════════════════════
 
     /**
-     * Mở tool chính ngay sau khi Login:
-     *   - Dev mode  : chạy lệnh giả lập (VD: calc.exe trên Windows)
-     *   - Prod mode : chạy "source run.tcl" trong bash (KHÔNG dùng ic/icc2_shell,
-     *                 vì môi trường bash trên Linux đã setup sẵn từ trước)
-     *
+     * Mở tool chính ngay sau Khi Login
      * @since 9.0.0
      * @param onLog   Callback nhận log text (để hiển thị nếu cần, có thể bỏ qua)
      * @param onDone  Callback gọi khi đã start tiến trình thành công (không đợi tool đóng)

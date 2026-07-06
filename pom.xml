@@ -6,10 +6,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.snst</groupId>
-    <artifactId>DFT_AI_AGENT</artifactId>
+    <artifactId>DFT_DAAE</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>DFT_AI_AGENT</name>
+    <name>DFT_DAAE</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -27,7 +27,7 @@
 
     <build>
         <!-- Tên JAR cố định -->
-        <finalName>DFT_AI_AGENT</finalName>
+        <finalName>DFT_DAAE</finalName>
 
         <!-- Đảm bảo Maven copy file ảnh vào target khi compile -->
         <resources>

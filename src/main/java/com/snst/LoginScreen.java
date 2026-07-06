@@ -28,7 +28,7 @@ public class LoginScreen {
     private boolean       isPasswordShown = false;
 
     public void show(Stage stage) {
-        stage.setTitle("DFT AI AGENT - SNST VIETNAM");
+        stage.setTitle("DFT DAAE - SNST VIETNAM");
         stage.setWidth(1280);
         stage.setHeight(800);
         stage.setMinWidth(900);
@@ -113,7 +113,7 @@ public class LoginScreen {
         HBox tagRow = new HBox(10);
         tagRow.setAlignment(Pos.CENTER);
 
-        Label tagLabel = new Label("DFT AI AGENT");
+        Label tagLabel = new Label("DFT DAAE");
         tagLabel.setFont(Font.font("Arial", FontWeight.BOLD, 25));
         tagLabel.setStyle(
             "-fx-text-fill: #ffffff;" +

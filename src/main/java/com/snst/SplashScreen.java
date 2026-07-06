@@ -1,5 +1,5 @@
 /**
- * Splash Screen — DFT AI Agent
+ * Splash Screen — DFT DAAE
  *
  * @since   2.2.0
  * @package com.snst

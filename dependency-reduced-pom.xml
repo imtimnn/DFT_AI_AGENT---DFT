@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.snst</groupId>
-  <artifactId>DFT_AI_AGENT</artifactId>
-  <name>DFT_AI_AGENT</name>
+  <artifactId>DFT_DAAE</artifactId>
+  <name>DFT_DAAE</name>
   <version>1.0.0</version>
   <build>
     <resources>
@@ -17,7 +17,7 @@
         </includes>
       </resource>
     </resources>
-    <finalName>DFT_AI_AGENT</finalName>
+    <finalName>DFT_DAAE</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
