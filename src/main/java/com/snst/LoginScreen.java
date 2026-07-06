@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -230,15 +232,20 @@ public class LoginScreen {
         passwordVisible.setStyle(fieldStyle);
         passwordVisible.setOnAction(e -> handleLogin());
 
-        Button toggleBtn = new Button("👁");
-        toggleBtn.setFont(Font.font(13));
-        toggleBtn.setStyle(
-            "-fx-background-color: transparent;" +
-            "-fx-text-fill: rgba(255,255,255,0.5);" +
-            "-fx-cursor: hand;" +
-            "-fx-padding: 0;"
-        );
-        toggleBtn.setOnAction(e -> togglePassword(toggleBtn));
+        // ── Icon con mắt vẽ bằng SVGPath, KHÔNG dùng emoji ──────────
+        // Lý do: emoji phụ thuộc font hệ thống, CentOS 6.10 không có
+        // font emoji nên hiện ô trống. SVGPath là hình vẽ thuần, luôn
+        // hiển thị giống nhau trên mọi hệ điều hành.
+        SVGPath eyeIcon = new SVGPath();
+        eyeIcon.setContent("M12 5C7 5 2.7 8.1 1 12c1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9zm0-7A2.5 2.5 0 1 0 12 14a2.5 2.5 0 0 0 0-4.5z");
+        eyeIcon.setFill(Color.rgb(255, 255, 255, 0.5));
+        eyeIcon.setScaleX(0.8);
+        eyeIcon.setScaleY(0.8);
+
+        StackPane toggleBtn = new StackPane(eyeIcon);
+        toggleBtn.setPrefSize(24, 24);
+        toggleBtn.setStyle("-fx-cursor: hand;");
+        toggleBtn.setOnMouseClicked(e -> togglePassword(eyeIcon));
 
         StackPane box = new StackPane();
         StackPane.setAlignment(toggleBtn, Pos.CENTER_RIGHT);
@@ -247,19 +254,14 @@ public class LoginScreen {
         return box;
     }
 
-    private void togglePassword(Button toggleBtn) {
+    private void togglePassword(SVGPath eyeIcon) {
         if (isPasswordShown) {
             passwordField.setText(passwordVisible.getText());
             passwordField.setVisible(true);
             passwordField.setManaged(true);
             passwordVisible.setVisible(false);
             passwordVisible.setManaged(false);
-            toggleBtn.setStyle(
-                "-fx-background-color: transparent;" +
-                "-fx-text-fill: rgba(255,255,255,0.5);" +
-                "-fx-cursor: hand;" +
-                "-fx-padding: 0;"
-            );
+            eyeIcon.setFill(Color.rgb(255, 255, 255, 0.5));
             isPasswordShown = false;
         } else {
             passwordVisible.setText(passwordField.getText());
@@ -267,12 +269,7 @@ public class LoginScreen {
             passwordVisible.setManaged(true);
             passwordField.setVisible(false);
             passwordField.setManaged(false);
-            toggleBtn.setStyle(
-                "-fx-background-color: transparent;" +
-                "-fx-text-fill: white;" +
-                "-fx-cursor: hand;" +
-                "-fx-padding: 0;"
-            );
+            eyeIcon.setFill(Color.WHITE);
             isPasswordShown = true;
         }
     }
