@@ -66,7 +66,7 @@ public class LoginScreen {
         StackPane.setAlignment(header, Pos.TOP_LEFT);
         StackPane.setMargin(header, new Insets(16, 0, 0, 20));
 
-        // Lớp 4 — Nội dung giữa (title PNR + form)
+        // Lớp 4 — Nội dung giữa (title app + form)
         VBox centerContent = buildCenterContent();
         StackPane.setAlignment(centerContent, Pos.CENTER_LEFT);
         StackPane.setMargin(centerContent, new Insets(0, 0, 0, 100));
@@ -96,7 +96,7 @@ public class LoginScreen {
     }
 
     // ═══════════════════════════════════════════════════════════════
-    //  CENTER — Title PNR + Form login
+    //  CENTER — Title app + Form login
     // ═══════════════════════════════════════════════════════════════
     private VBox buildCenterContent() {
         VBox center = new VBox(28);
@@ -107,7 +107,7 @@ public class LoginScreen {
         return center;
     }
 
-    // ── Title: chỉ PNR TIMING DEBUGGER ───────────────────────────
+    // Title: chỉ DFT DAAE
     private VBox buildTitleSection() {
         VBox section = new VBox(6);
         section.setAlignment(Pos.CENTER);
@@ -166,7 +166,7 @@ public class LoginScreen {
 
         Button loginBtn = buildLoginButton();
 
-        Label versionLabel = new Label("v2.4.1  ·  © 2026 ADTechnology");
+        Label versionLabel = new Label("DFT GROUP  ·  © 2026 ADTECHNOLOGY & SNST VIETNAM");
         versionLabel.setFont(Font.font("Arial", 11));
         versionLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.25);");
         VBox.setMargin(versionLabel, new Insets(4, 0, 0, 0));
@@ -233,9 +233,6 @@ public class LoginScreen {
         passwordVisible.setOnAction(e -> handleLogin());
 
         // ── Icon con mắt vẽ bằng SVGPath, KHÔNG dùng emoji ──────────
-        // Lý do: emoji phụ thuộc font hệ thống, CentOS 6.10 không có
-        // font emoji nên hiện ô trống. SVGPath là hình vẽ thuần, luôn
-        // hiển thị giống nhau trên mọi hệ điều hành.
         SVGPath eyeIcon = new SVGPath();
         eyeIcon.setContent("M12 5C7 5 2.7 8.1 1 12c1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9zm0-7A2.5 2.5 0 1 0 12 14a2.5 2.5 0 0 0 0-4.5z");
         eyeIcon.setFill(Color.rgb(255, 255, 255, 0.5));
@@ -243,13 +240,14 @@ public class LoginScreen {
         eyeIcon.setScaleY(0.8);
 
         StackPane toggleBtn = new StackPane(eyeIcon);
-        toggleBtn.setPrefSize(24, 24);
+        toggleBtn.setPrefSize(20, 20);
+        toggleBtn.setMaxSize(20, 20);
         toggleBtn.setStyle("-fx-cursor: hand;");
         toggleBtn.setOnMouseClicked(e -> togglePassword(eyeIcon));
 
         StackPane box = new StackPane();
         StackPane.setAlignment(toggleBtn, Pos.CENTER_RIGHT);
-        StackPane.setMargin(toggleBtn, new Insets(0, 14, 0, 0));
+        StackPane.setMargin(toggleBtn, new Insets(0, 10, 0, 0));
         box.getChildren().addAll(passwordField, passwordVisible, toggleBtn);
         return box;
     }

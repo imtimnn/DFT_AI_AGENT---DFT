@@ -143,7 +143,7 @@ public class ToolLauncher {
                     pb = new ProcessBuilder(devCmd.trim().split("\\s+"));
 
                 } else {
-                    // ── PROD: chỉ "source run.tcl" trong bash, KHÔNG mở ic/icc2_shell ────
+                    // ── PROD: chỉ "source run" trong bash, KHÔNG mở ic/icc2_shell ────
                     String runTcl = AppConfig.getRunTclPath();
 
                     String fullCmd = "source " + runTcl;
@@ -151,6 +151,14 @@ public class ToolLauncher {
                         onLog.accept("$ " + fullCmd + "\n")
                     );
                     pb = new ProcessBuilder("bash", "-c", fullCmd);
+
+                    // Ép tiến trình con luôn chạy với thư mục hiện tại
+                    // là đúng thư mục chứa "run" — không phụ thuộc app
+                    // được mở từ đâu (bấm icon, gõ lệnh từ thư mục
+                    // nào...). File "run" tham chiếu tới các file khác
+                    // (như "DFT_AGENT") bằng đường dẫn tương đối, nên
+                    // nếu không set đúng thư mục này sẽ tìm nhầm chỗ.
+                    pb.directory(new File(AppConfig.getAppDirectory()));
                 }
 
                 pb.inheritIO();

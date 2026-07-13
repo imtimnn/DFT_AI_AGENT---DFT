@@ -1,6 +1,6 @@
 /**
  * Đọc config từ file config.properties
- * Tự động tìm file run.tcl nằm CÙNG THƯ MỤC với file .jar khi chạy ở prod mode
+ * Tự động tìm file "run" nằm CÙNG THƯ MỤC với file .jar khi chạy ở prod mode
  *
  * @since   1.0.0
  * @package com.snst
@@ -22,14 +22,13 @@ public class AppConfig {
             InputStream is = AppConfig.class
                 .getResourceAsStream("/config.properties");
             if (is == null) {
-                System.err.println("[AppConfig] KHÔNG TÌM THẤY config.properties!");
+                System.err.println("[AppConfig] config.properties NOT FOUND!");
             } else {
                 props.load(is);
-                System.out.println("[AppConfig] Load thành công!");
-                System.out.println("[AppConfig] app.mode = " + props.getProperty("app.mode"));
+                System.out.println("[AppConfig] Loaded successfully.");
             }
         } catch (Exception e) {
-            System.err.println("[AppConfig] Lỗi: " + e.getMessage());
+            System.err.println("[AppConfig] Error: " + e.getMessage());
         }
     }
 
@@ -85,8 +84,9 @@ public class AppConfig {
     }
 
     /**
-     * [MỚI] Lấy thư mục chứa file .jar đang chạy (prod) hoặc thư mục project (dev)
-     * Dùng để tìm các file đi kèm nằm CÙNG CẤP với .jar, ví dụ run.tcl
+     * Lấy thư mục chứa file .jar đang chạy (prod) hoặc thư mục project
+     * (dev). Dùng để tìm các file đi kèm nằm cùng cấp với .jar, ví dụ
+     * file "run".
      *
      * @since 9.0.0
      */
@@ -112,18 +112,30 @@ public class AppConfig {
     }
 
     /**
-     * [SỬA] Lấy đường dẫn file run.tcl:
-     *   - PROD: tự động ghép getAppDirectory() + "/run.tcl" (CÙNG THƯ MỤC với .jar)
-     *   - DEV : lấy từ config.properties như cũ (vì dev mode không thật sự đọc file này,
-     *           chỉ dùng lệnh giả lập calc.exe qua getDevLaunchCommand())
+     * Lấy đường dẫn file "run":
+     *   - PROD: tự động ghép getAppDirectory() + "/run" (cùng thư mục với .jar)
+     *   - DEV : lấy từ config.properties (dev mode dùng lệnh giả lập
+     *           calc.exe qua getDevLaunchCommand(), không đọc file này)
      *
-     * @since 8.0.0 — sửa lại 9.0.0 để tự tìm cùng thư mục .jar
+     * @since 8.0.0
      */
     public static String getRunTclPath() {
         if (isDevMode()) {
             return get("dev.tcl.run");
         }
-        File runTclFile = new File(getAppDirectory(), "run");
-        return runTclFile.getAbsolutePath();
+        File runFile = new File(getAppDirectory(), "run");
+        return runFile.getAbsolutePath();
+    }
+
+    /**
+     * Kiểm tra file "run" có thực sự tồn tại trên đĩa không — dùng để
+     * báo lỗi rõ ràng trước khi chạy, thay vì để bash tự chạy
+     * "source <file không tồn tại>" rồi lỗi lặng lẽ trong console.
+     *
+     * @since 9.1.0
+     */
+    public static boolean runFileExists() {
+        if (isDevMode()) return true; // dev mode không đọc file này, luôn coi là OK
+        return new File(getRunTclPath()).isFile();
     }
 }

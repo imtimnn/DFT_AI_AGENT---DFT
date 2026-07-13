@@ -57,7 +57,6 @@ public class SplashScreen {
         content.setPadding(new Insets(40, 40, 40, 40));
         content.setMaxWidth(Double.MAX_VALUE);
 
-        // ── Logo to hơn ──────────────────────────────────────────
         ImageView logo = new ImageView(
             new Image(getClass().getResourceAsStream("/images/logo_rm_bkgr_white.png"))
         );
@@ -65,12 +64,10 @@ public class SplashScreen {
         logo.setFitHeight(300);
         logo.setPreserveRatio(true);
 
-        // ── Loading label ─────────────────────────────────────────
         Label loadingLabel = new Label("Loading...");
         loadingLabel.setFont(Font.font("Arial", 15));
         loadingLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.4);");
 
-        // ── Progress bar full width + label % ────────────────────
         ProgressBar progressBar = new ProgressBar(0);
         progressBar.setMaxWidth(Double.MAX_VALUE);
         progressBar.setPrefHeight(6);
@@ -81,12 +78,10 @@ public class SplashScreen {
             "-fx-padding: 0;"
         );
 
-        // Label hiện % tiến trình
         Label percentLabel = new Label("0%");
         percentLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         percentLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.5);");
 
-        // Ghép progress bar + % vào 1 hàng
         HBox progressRow = new HBox(10);
         progressRow.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(progressBar, Priority.ALWAYS);
@@ -97,7 +92,7 @@ public class SplashScreen {
             loadingLabel, progressRow
         );
 
-        // ── Animate progress ──────────────────────────────────────
+        // Animation thanh tiến trình, tự đóng splash khi đạt 100%
         Timeline[] timelineRef = new Timeline[1];
         timelineRef[0] = new Timeline(
             new KeyFrame(Duration.millis(60), e -> {
